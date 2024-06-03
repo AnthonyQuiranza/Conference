@@ -1,1 +1,77 @@
 /venv
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+# Database #
+db.sqlite3
+*.sqlite3
+
+# Static and media files #
+/static/
+/media/
+
+# Virtual environment #
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env/
+
+# VSCode #
+.vscode/
+
+# JetBrains (PyCharm, IntelliJ) #
+.idea/
+
+# macOS #
+.DS_Store
+
+# Windows #
+Thumbs.db
+
+# Pytest #
+.cache
+*.cover
+.hypothesis/
+.tox/
+.pytest_cache/
+
+# Coverage reports #
+htmlcov/
+.coverage
+.coverage.*
+
+# Mypy #
+.mypy_cache/
+
+# Environment variables #
+.env
+.env.*
+
+# Node modules #
+node_modules/
+
+# pip #
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Celery stuff #
+celerybeat-schedule
+celerybeat.pid
+
+# Ansible #
+.ansible/
+
+# Encrypted Django secrets #
+*.key
+
+# Jupyter Notebook #
+.ipynb_checkpoints
+
+# Generated files #
+*.lock
