@@ -18,14 +18,6 @@
 - **SQLite**: Base de datos para el almacenamiento de datos.
 - **Font Awesome**: Librería de iconos para una mejor experiencia visual.
 
-## Capturas de pantalla 📸
-
-![Dashboard](ruta/a/la/captura.png)
-*Descripción de la captura de pantalla*
-
-![Detalle del Evento](ruta/a/la/captura.png)
-*Descripción de la captura de pantalla*
-
 ## Instalación 🚀
 
 Sigue estos pasos para poner en marcha el proyecto en tu máquina local:
@@ -111,8 +103,8 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENS
 
 Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto con nosotros:
 
-- **Correo electrónico:** tuemail@example.com
-- **GitHub:** [tuusuario](https://github.com/tuusuario)
+- **Correo electrónico:** anthony.quiranza@cloudsofts.net
+- **GitHub:** [tuusuario](https://github.com/anthonyquiranza)
 
 ---
 
