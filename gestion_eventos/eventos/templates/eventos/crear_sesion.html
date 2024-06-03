@@ -1,0 +1,10 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Crear Sesión{% endblock %}
+{% block content %}
+<h2>Crear Sesión</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+{% endblock %}

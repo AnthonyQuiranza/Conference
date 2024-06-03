@@ -1,0 +1,14 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Enviar Trabajo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Enviar Trabajo para {{ evento.nombre }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enviar Trabajo</button>
+    </form>
+</div>
+{% endblock %}

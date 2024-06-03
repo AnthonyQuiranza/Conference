@@ -1,0 +1,22 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Organizar Cronograma{% endblock %}
+{% block content %}
+<h2>Organizar Cronograma para {{ evento.nombre }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Asignar</button>
+</form>
+<h3>Sesiones</h3>
+<ul>
+    {% for sesion in sesiones %}
+        <li>{{ sesion.titulo }}: {{ sesion.hora_inicio }} - {{ sesion.hora_fin }} en {{ sesion.ubicacion }} {% if sesion.trabajo %}({{ sesion.trabajo.titulo }}){% endif %}</li>
+    {% endfor %}
+</ul>
+<h3>Trabajos Aceptados</h3>
+<ul>
+    {% for trabajo in trabajos_aceptados %}
+        <li>{{ trabajo.titulo }} por {{ trabajo.autor.username }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

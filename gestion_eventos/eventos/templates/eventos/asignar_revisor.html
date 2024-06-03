@@ -1,0 +1,14 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Asignar Revisor{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Asignar Revisor para {{ trabajo.titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Asignar</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "eventos/base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario:</label>
+                    {{ form.username|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña:</label>
+                    {{ form.password|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                {% if form.errors %}
+                    <div class="alert alert-danger mt-3">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

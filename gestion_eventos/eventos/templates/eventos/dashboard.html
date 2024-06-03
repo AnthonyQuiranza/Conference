@@ -1,0 +1,23 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Dashboard</h2>
+    {% if user.rol == 'organizador' %}
+        <a href="{% url 'crear_evento' %}" class="btn btn-primary mb-3">Crear Evento</a>
+    {% endif %}
+    {% if eventos %}
+        <div class="list-group">
+            {% for evento in eventos %}
+                <a href="{% url 'detalle_evento' evento.id %}" class="list-group-item list-group-item-action">
+                    {{ evento.nombre }}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="alert alert-warning">No hay eventos disponibles.</p>
+    {% endif %}
+</div>
+{% endblock %}

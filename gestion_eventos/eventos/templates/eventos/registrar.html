@@ -1,0 +1,83 @@
+{% extends "eventos/base.html" %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Registrarse</h2>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            {{ form.username.label_tag }} {{ form.username }}
+            {% for error in form.username.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.email.label_tag }} {{ form.email }}
+            {% for error in form.email.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.rol.label_tag }} {{ form.rol }}
+            {% for error in form.rol.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.foto_perfil.label_tag }} {{ form.foto_perfil }}
+            {% for error in form.foto_perfil.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.descripcion.label_tag }} {{ form.descripcion }}
+            {% for error in form.descripcion.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.titulos_academicos.label_tag }} {{ form.titulos_academicos }}
+            {% for error in form.titulos_academicos.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label>Redes sociales</label>
+            {{ form.twitter }}
+            {{ form.linkedin }}
+        </div>
+        <div class="mb-3">
+            {{ form.password1.label_tag }} {{ form.password1 }}
+            {% for error in form.password1.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.password2.label_tag }} {{ form.password2 }}
+            {% for error in form.password2.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+</div>
+{% endblock %}

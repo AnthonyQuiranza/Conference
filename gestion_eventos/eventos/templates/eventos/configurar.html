@@ -1,0 +1,10 @@
+{% extends 'eventos/base.html' %}
+{% block title %}Configuración del Sitio{% endblock %}
+{% block content %}
+<h2>Configuración del Sitio</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
