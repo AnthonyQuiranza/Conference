@@ -30,15 +30,16 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+AUTH_USER_MODEL = 'eventos.UsuarioPersonalizado'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'eventos',
+    'django.contrib.sites',  # Mueve este arriba
+    'eventos',  # Asegúrate de que tu app eventos esté listada
     'crispy_forms',
-    'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -93,7 +94,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-AUTH_USER_MODEL = 'eventos.UsuarioPersonalizado'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

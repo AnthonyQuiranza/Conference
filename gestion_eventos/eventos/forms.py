@@ -3,6 +3,7 @@ from django import forms
 from .models import Evento, Trabajo, Revision, Configuracion, Sesion
 from django.contrib.auth.forms import UserCreationForm
 from .models import UsuarioPersonalizado
+from django_select2.forms import Select2MultipleWidget
 import json
 
 TIPOS_TRABAJO_CHOICES = [
@@ -15,13 +16,25 @@ TIPOS_TRABAJO_CHOICES = [
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
-        fields = ['nombre', 'logo', 'fecha_inicio', 'fecha_fin', 'descripcion', 'tipos_trabajo']
+        fields = ['nombre', 'logo', 'fecha_inicio', 'fecha_fin', 'descripcion', 'tipos_trabajo', 'es_virtual', 'ubicacion', 'url_virtual', 'capacidad']
+        widgets = {
+            'tipos_trabajo': forms.SelectMultiple(attrs={'class': 'form-control'}),
+        }
 
-    def __init__(self, *args, **kwargs):
-        super(EventoForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            tipos = self.instance.tipos_trabajo_list()
-            self.fields['tipos_trabajo'].initial = ', '.join(tipos)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        es_virtual = cleaned_data.get("es_virtual")
+        ubicacion = cleaned_data.get("ubicacion")
+        url_virtual = cleaned_data.get("url_virtual")
+
+        if es_virtual and not url_virtual:
+            self.add_error('url_virtual', 'Debe proporcionar una URL para el evento virtual.')
+        elif not es_virtual and not ubicacion:
+            self.add_error('ubicacion', 'Debe proporcionar una ubicación para el evento presencial.')
+
+        return cleaned_data
+
 
 
 
@@ -41,15 +54,6 @@ class TrabajoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if evento:
             self.fields['tipo'].queryset = evento.tipos_trabajo.all()
-
-
-
-
-
-
-
-
-
 
 
 
@@ -131,7 +135,12 @@ class SesionForm(forms.ModelForm):
         }
 
 class AsignarRevisorForm(forms.Form):
-    revisor = forms.ModelChoiceField(queryset=UsuarioPersonalizado.objects.filter(rol='revisor'), widget=forms.Select(attrs={'class': 'form-control'}))
+    revisores = forms.ModelMultipleChoiceField(
+        queryset=UsuarioPersonalizado.objects.filter(rol='revisor'),
+        widget=Select2MultipleWidget(attrs={'class': 'form-control'})
+    )
+
+
 
 class RevisionForm(forms.ModelForm):
     class Meta:

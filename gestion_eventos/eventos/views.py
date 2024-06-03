@@ -1,4 +1,5 @@
 from django.forms import ValidationError
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -210,24 +211,43 @@ def organizar_cronograma(request, evento_id):
 
 @login_required
 @user_passes_test(lambda u: u.rol == 'organizador')
-def asignar_revisor(request, evento_id, trabajo_id):
+def asignar_revisores(request, evento_id, trabajo_id):
     evento = get_object_or_404(Evento, id=evento_id)
     trabajo = get_object_or_404(Trabajo, id=trabajo_id)
     if request.method == 'POST':
         form = AsignarRevisorForm(request.POST)
         if form.is_valid():
-            revisor = form.cleaned_data['revisor']
-            Revision.objects.create(
-                trabajo=trabajo, 
-                revisor=revisor, 
-                puntuacion=0,  # Valor predeterminado para puntuacion
-                comentarios=''  # Valor predeterminado para comentarios
-            )
-            messages.success(request, 'Revisor asignado correctamente.')
+            revisores = form.cleaned_data['revisores']
+            for revisor in revisores:
+                Revision.objects.get_or_create(
+                    trabajo=trabajo, 
+                    revisor=revisor, 
+                    defaults={'puntuacion': 0, 'comentarios': ''}
+                )
+            messages.success(request, 'Revisores asignados correctamente.')
             return redirect('detalle_evento', evento_id=evento.id)
     else:
         form = AsignarRevisorForm()
-    return render(request, 'eventos/asignar_revisor.html', {'form': form, 'evento': evento, 'trabajo': trabajo})
+
+    revisores_asignados = Revision.objects.filter(trabajo=trabajo)
+    return render(request, 'eventos/asignar_revisores.html', {
+        'form': form, 
+        'evento': evento, 
+        'trabajo': trabajo, 
+        'revisores_asignados': revisores_asignados
+    })
+
+@login_required
+@user_passes_test(lambda u: u.rol == 'organizador')
+def quitar_revisor(request):
+    if request.method == 'POST':
+        revision_id = request.POST.get('revision_id')
+        revision = get_object_or_404(Revision, id=revision_id)
+        revision.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
+
 
 
 

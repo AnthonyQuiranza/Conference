@@ -4,41 +4,62 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Crear Evento</h2>
+    <h2 class="mb-4">Crear Evento</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form.non_field_errors }}
         <div class="mb-3">
-            {{ form.nombre.label_tag }}
-            {{ form.nombre }}
+            {{ form.nombre.label_tag }} {{ form.nombre }}
         </div>
         <div class="mb-3">
-            {{ form.logo.label_tag }}
-            {{ form.logo }}
+            {{ form.logo.label_tag }} {{ form.logo }}
         </div>
         <div class="mb-3">
-            {{ form.fecha_inicio.label_tag }}
-            {{ form.fecha_inicio }}
+            {{ form.fecha_inicio.label_tag }} {{ form.fecha_inicio }}
         </div>
         <div class="mb-3">
-            {{ form.fecha_fin.label_tag }}
-            {{ form.fecha_fin }}
+            {{ form.fecha_fin.label_tag }} {{ form.fecha_fin }}
         </div>
         <div class="mb-3">
-            {{ form.descripcion.label_tag }}
-            {{ form.descripcion }}
+            {{ form.descripcion.label_tag }} {{ form.descripcion }}
         </div>
         <div class="mb-3">
-            {{ form.tipos_trabajo.label_tag }}
-            <div class="form-check">
-                {% for checkbox in form.tipos_trabajo %}
-                    <div class="form-check">
-                        {{ checkbox.tag }}
-                        {{ checkbox.choice_label }}
-                    </div>
-                {% endfor %}
-            </div>
+            {{ form.tipos_trabajo.label_tag }} {{ form.tipos_trabajo }}
         </div>
-        <button type="submit" class="btn btn-primary">Crear Evento</button>
+        <div class="mb-3">
+            {{ form.es_virtual.label_tag }} {{ form.es_virtual }}
+        </div>
+        <div class="mb-3" id="ubicacion-field" style="display: none;">
+            {{ form.ubicacion.label_tag }} {{ form.ubicacion }}
+        </div>
+        <div class="mb-3" id="url_virtual-field" style="display: none;">
+            {{ form.url_virtual.label_tag }} {{ form.url_virtual }}
+        </div>
+        <div class="mb-3">
+            {{ form.capacidad.label_tag }} {{ form.capacidad }}
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const esVirtualCheckbox = document.getElementById('id_es_virtual');
+    const ubicacionField = document.getElementById('ubicacion-field');
+    const urlVirtualField = document.getElementById('url_virtual-field');
+
+    function toggleFields() {
+        if (esVirtualCheckbox.checked) {
+            ubicacionField.style.display = 'none';
+            urlVirtualField.style.display = 'block';
+        } else {
+            ubicacionField.style.display = 'block';
+            urlVirtualField.style.display = 'none';
+        }
+    }
+
+    esVirtualCheckbox.addEventListener('change', toggleFields);
+    toggleFields();
+});
+</script>
 {% endblock %}

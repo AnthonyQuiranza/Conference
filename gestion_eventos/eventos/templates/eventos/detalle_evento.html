@@ -4,49 +4,52 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0"><i class="fas fa-calendar-alt"></i> {{ evento.nombre }}</h2>
-        </div>
-        <div class="card-body">
-            <p class="lead"><i class="fas fa-info-circle"></i> {{ evento.descripcion }}</p>
-            <div class="mb-3">
-                {% if es_autor %}
-                    <a href="{% url 'enviar_trabajo' evento.id %}" class="btn btn-success">
-                        <i class="fas fa-upload"></i> Enviar Trabajo
-                    </a>
-                {% endif %}
-                {% if es_organizador %}
-                    <a href="{% url 'personalizar_evento' evento.id %}" class="btn btn-info">
-                        <i class="fas fa-edit"></i> Editar Evento
-                    </a>
-                {% endif %}
-            </div>
+    <h2 class="mb-4">{{ evento.nombre }}</h2>
+    <p>{{ evento.descripcion }}</p>
 
-            <h3 class="mt-4"><i class="fas fa-file-alt"></i> Trabajos</h3>
-            <div class="list-group">
-                {% for item in trabajos_con_revisiones %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-1"><i class="fas fa-file"></i> {{ item.trabajo.titulo }}</h5>
-                            <p class="mb-1"><strong>Autor:</strong> {{ item.trabajo.autor.username }}</p>
-                        </div>
-                        <div class="btn-group" role="group" aria-label="Acciones">
-                            {% if es_revisor and item.tiene_revision %}
-                                <a href="{% url 'gestionar_revision' item.revision_id %}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-check-circle"></i> Revisar
-                                </a>
-                            {% endif %}
-                            {% if es_organizador %}
-                                <a href="{% url 'asignar_revisor' evento.id item.trabajo.id %}" class="btn btn-secondary btn-sm">
-                                    <i class="fas fa-user-check"></i> Asignar Revisor
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+    {% if es_autor %}
+        <a href="{% url 'enviar_trabajo' evento.id %}" class="btn btn-primary mb-3">
+            <i class="fas fa-upload"></i> Enviar Trabajo
+        </a>
+    {% endif %}
+
+    {% if es_organizador %}
+        <a href="{% url 'personalizar_evento' evento.id %}" class="btn btn-secondary mb-3">
+            <i class="fas fa-edit"></i> Editar Evento
+        </a>
+    {% endif %}
+
+    <h3>Trabajos</h3>
+    <ul class="list-group">
+        {% for item in trabajos_con_revisiones %}
+        <li class="list-group-item">
+            <h5>{{ item.trabajo.titulo }} - <small>{{ item.trabajo.autor.username }}</small></h5>
+            <p>{{ item.trabajo.resumen }}</p>
+            <a href="{{ item.trabajo.archivo.url }}" class="btn btn-info btn-sm" target="_blank">
+                <i class="fas fa-file-download"></i> Descargar Trabajo
+            </a>
+            {% if es_revisor and item.tiene_revision %}
+                <a href="{% url 'gestionar_revision' item.revision_id %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit"></i> Revisar
+                </a>
+            {% endif %}
+            {% if es_organizador %}
+                <a href="{% url 'asignar_revisores' evento.id item.trabajo.id %}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-user-plus"></i> Asignar Revisores
+                </a>
+                <div class="mt-2">
+                    <h6>Revisiones:</h6>
+                    <ul>
+                        {% for revision in item.revisiones %}
+                            <li>
+                                Revisor: {{ revision.revisor }} - Puntuación: {{ revision.puntuacion }} - Comentarios: {{ revision.comentarios }} - Fecha: {{ revision.fecha_revision }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}

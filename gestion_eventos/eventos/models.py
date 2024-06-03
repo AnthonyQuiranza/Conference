@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils import timezone
 from django.conf import settings
 from django.core.exceptions import ValidationError
+
 class Configuracion(models.Model):
     nombre_sitio = models.CharField(max_length=200)
     logo = models.ImageField(upload_to='logos/')
@@ -25,12 +26,27 @@ class Evento(models.Model):
     fecha_fin = models.DateField()
     descripcion = models.TextField(blank=True, null=True)
     tipos_trabajo = models.ManyToManyField(TipoTrabajo, blank=True)
+    ubicacion = models.CharField(max_length=255, blank=True, null=True)  # Campo para la ubicación
+    es_virtual = models.BooleanField(default=False)  # Campo para indicar si es virtual
+    url_virtual = models.URLField(blank=True, null=True)  # Campo para el enlace del evento virtual
+    capacidad = models.PositiveIntegerField(blank=True, null=True)  # Campo para la capacidad
+    organizador = models.CharField(max_length=200, blank=True, null=False)  # Campo para el organizador
 
     def __str__(self):
         return self.nombre
 
     def tipos_trabajo_list(self):
         return [tipo.nombre for tipo in self.tipos_trabajo.all()]
+
+    def clean(self):
+        # Validar que si es_virtual es True, url_virtual no sea None
+        if self.es_virtual and not self.url_virtual:
+            raise ValidationError('Debe proporcionar una URL para el evento virtual.')
+
+        # Validar que si es_virtual es False, ubicacion no sea None
+        if not self.es_virtual and not self.ubicacion:
+            raise ValidationError('Debe proporcionar una ubicación para el evento presencial.')
+
 
 class Trabajo(models.Model):
     titulo = models.CharField(max_length=200)

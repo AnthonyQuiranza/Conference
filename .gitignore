@@ -75,3 +75,6 @@ celerybeat.pid
 
 # Generated files #
 *.lock
+
+#sql
+*.sqlite3

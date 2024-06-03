@@ -12,7 +12,9 @@ urlpatterns = [
     path('crear_sesion/', views.crear_sesion, name='crear_sesion'),
     path('organizar_cronograma/<int:evento_id>/', views.organizar_cronograma, name='organizar_cronograma'),
     path('crear_evento/', views.crear_evento, name='crear_evento'),
-    path('asignar_revisor/<int:evento_id>/<int:trabajo_id>/', views.asignar_revisor, name='asignar_revisor'),
+    path('asignar_revisores/<int:evento_id>/<int:trabajo_id>/', views.asignar_revisores, name='asignar_revisores'),
+    path('quitar_revisor/', views.quitar_revisor, name='quitar_revisor'),
+
     path('gestionar_revision/<int:revision_id>/', views.gestionar_revision, name='gestionar_revision'),
     path('', views.dashboard, name='home'),  # URL raíz que apunta al dashboard
 ]

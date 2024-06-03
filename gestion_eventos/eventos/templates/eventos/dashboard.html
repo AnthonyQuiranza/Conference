@@ -4,20 +4,25 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Dashboard</h2>
+    <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
     {% if user.rol == 'organizador' %}
-        <a href="{% url 'crear_evento' %}" class="btn btn-primary mb-3">Crear Evento</a>
+        <a href="{% url 'crear_evento' %}" class="btn btn-primary mb-3"><i class="fas fa-plus-circle"></i> Crear Evento</a>
     {% endif %}
     {% if eventos %}
         <div class="list-group">
             {% for evento in eventos %}
-                <a href="{% url 'detalle_evento' evento.id %}" class="list-group-item list-group-item-action">
-                    {{ evento.nombre }}
+                <a href="{% url 'detalle_evento' evento.id %}" class="list-group-item list-group-item-action d-flex align-items-center">
+                    {% if evento.logo %}
+                        <img src="{{ evento.logo.url }}" alt="{{ evento.nombre }}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+                    {% else %}
+                        <i class="fas fa-calendar-alt fa-2x me-3"></i>
+                    {% endif %}
+                    <span>{{ evento.nombre }}</span>
                 </a>
             {% endfor %}
         </div>
     {% else %}
-        <p class="alert alert-warning">No hay eventos disponibles.</p>
+        <p class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> No hay eventos disponibles.</p>
     {% endif %}
 </div>
 {% endblock %}

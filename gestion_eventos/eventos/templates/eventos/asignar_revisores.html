@@ -1,0 +1,51 @@
+{% extends 'eventos/base.html' %}
+
+{% block title %}Asignar Revisores{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4"><i class="fas fa-user-edit"></i> Asignar Revisores para "{{ trabajo.titulo }}"</h2>
+    <form method="post" id="asignar-revisores-form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_revisores" class="form-label"><i class="fas fa-users"></i> Revisores:</label>
+            {{ form.revisores }}
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Asignar</button>
+    </form>
+
+    <h3 class="mt-5"><i class="fas fa-list"></i> Revisores Asignados</h3>
+    <ul class="list-group" id="revisores-asignados">
+        {% for revision in revisores_asignados %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <i class="fas fa-user"></i> {{ revision.revisor.username }}
+            <button class="btn btn-danger btn-sm quitar-revisor" data-revision-id="{{ revision.id }}">
+                <i class="fas fa-user-times"></i> Quitar
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#asignar-revisores-form').on('submit', function(event) {
+        event.preventDefault();
+        $.post("{% url 'asignar_revisores' evento.id trabajo.id %}", $(this).serialize(), function(data) {
+            location.reload();
+        });
+    });
+
+    $('.quitar-revisor').on('click', function() {
+        var revisionId = $(this).data('revision-id');
+        $.post("{% url 'quitar_revisor' %}", {
+            'revision_id': revisionId,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }, function(data) {
+            location.reload();
+        });
+    });
+});
+</script>
+{% endblock %}
