@@ -5,90 +5,71 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4"><i class="fas fa-edit"></i> Personalizar Evento: {{ evento.nombre }}</h2>
-    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-
-        <div class="mb-3">
-            <label for="{{ form.nombre.id_for_label }}" class="form-label">
-                <i class="fas fa-tag"></i> {{ form.nombre.label }}
-            </label>
-            {{ form.nombre|add_class:"form-control" }}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h2 class="mb-0"><i class="fas fa-cogs"></i> Personalizar Evento: {{ evento.nombre }}</h2>
         </div>
-
-        <div class="mb-3">
-            <label for="{{ form.logo.id_for_label }}" class="form-label">
-                <i class="fas fa-image"></i> {{ form.logo.label }}
-            </label>
-            {{ form.logo|add_class:"form-control" }}
-            {% if evento.logo %}
-                <div class="mt-2">
-                    <a href="{{ evento.logo.url }}" target="_blank">
-                        <img src="{{ evento.logo.url }}" alt="Logo actual" class="img-thumbnail" style="max-height: 100px;">
-                    </a>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group mb-3">
+                    <label for="{{ form.nombre.id_for_label }}"><i class="fas fa-calendar-alt"></i> Nombre</label>
+                    {{ form.nombre|add_class:"form-control" }}
                 </div>
-            {% endif %}
+                <div class="form-group mb-3">
+                    <label for="{{ form.logo.id_for_label }}"><i class="fas fa-image"></i> Logo</label>
+                    {{ form.logo|add_class:"form-control" }}
+                    {% if evento.logo %}
+                        <br>Logo Actual: <a href="{{ evento.logo.url }}" target="_blank">{{ evento.logo.name }}</a>
+                    {% endif %}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.fecha_inicio.id_for_label }}"><i class="fas fa-calendar-day"></i> Fecha de Inicio</label>
+                    {{ form.fecha_inicio|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.fecha_fin.id_for_label }}"><i class="fas fa-calendar-check"></i> Fecha de Fin</label>
+                    {{ form.fecha_fin|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.descripcion.id_for_label }}"><i class="fas fa-align-left"></i> Descripción</label>
+                    {{ form.descripcion|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.tipos_trabajo.id_for_label }}"><i class="fas fa-tasks"></i> Tipos de Trabajo</label>
+                    {{ form.tipos_trabajo|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.sitio_web.id_for_label }}"><i class="fas fa-globe"></i> Sitio Web</label>
+                    {{ form.sitio_web|add_class:"form-control" }}
+                </div>
+                <div class="form-group form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="{{ form.es_virtual.id_for_label }}" name="{{ form.es_virtual.name }}" {% if form.es_virtual.value %}checked{% endif %}>
+                    <label for="{{ form.es_virtual.id_for_label }}" class="form-check-label">
+                        <i class="fas fa-laptop"></i> Es Virtual
+                    </label>
+                </div>
+                <div class="form-group mb-3" id="ubicacion-field" style="display: none;">
+                    <label for="{{ form.ubicacion.id_for_label }}"><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                    {{ form.ubicacion|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3" id="url_virtual-field" style="display: none;">
+                    <label for="{{ form.url_virtual.id_for_label }}"><i class="fas fa-link"></i> URL Virtual</label>
+                    {{ form.url_virtual|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.capacidad.id_for_label }}"><i class="fas fa-users"></i> Capacidad</label>
+                    {{ form.capacidad|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.organizador.id_for_label }}"><i class="fas fa-user-tie"></i> Organizador</label>
+                    {{ form.organizador|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label for="{{ form.fecha_inicio.id_for_label }}" class="form-label">
-                <i class="fas fa-calendar-alt"></i> {{ form.fecha_inicio.label }}
-            </label>
-            {{ form.fecha_inicio|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            <label for="{{ form.fecha_fin.id_for_label }}" class="form-label">
-                <i class="fas fa-calendar-alt"></i> {{ form.fecha_fin.label }}
-            </label>
-            {{ form.fecha_fin|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            <label for="{{ form.descripcion.id_for_label }}" class="form-label">
-                <i class="fas fa-align-left"></i> {{ form.descripcion.label }}
-            </label>
-            {{ form.descripcion|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            <label for="{{ form.tipos_trabajo.id_for_label }}" class="form-label">
-                <i class="fas fa-tasks"></i> {{ form.tipos_trabajo.label }}
-            </label>
-            {{ form.tipos_trabajo|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3 form-check">
-            <label for="{{ form.es_virtual.id_for_label }}" class="form-check-label">
-                <i class="fas fa-laptop"></i> {{ form.es_virtual.label }}
-            </label>
-            {{ form.es_virtual|add_class:"form-check-input" }}
-        </div>
-
-        <div class="mb-3" id="ubicacion-field" style="display: none;">
-            <label for="{{ form.ubicacion.id_for_label }}" class="form-label">
-                <i class="fas fa-map-marker-alt"></i> {{ form.ubicacion.label }}
-            </label>
-            {{ form.ubicacion|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3" id="url_virtual-field" style="display: none;">
-            <label for="{{ form.url_virtual.id_for_label }}" class="form-label">
-                <i class="fas fa-link"></i> {{ form.url_virtual.label }}
-            </label>
-            {{ form.url_virtual|add_class:"form-control" }}
-        </div>
-
-        <div class="mb-3">
-            <label for="{{ form.capacidad.id_for_label }}" class="form-label">
-                <i class="fas fa-users"></i> {{ form.capacidad.label }}
-            </label>
-            {{ form.capacidad|add_class:"form-control" }}
-        </div>
-
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
-    </form>
+    </div>
 </div>
 
 <script>

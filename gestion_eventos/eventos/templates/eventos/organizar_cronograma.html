@@ -1,22 +1,72 @@
 {% extends 'eventos/base.html' %}
+{% load static %}
+{% load form_tags %}
+
 {% block title %}Organizar Cronograma{% endblock %}
+
 {% block content %}
-<h2>Organizar Cronograma para {{ evento.nombre }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Asignar</button>
-</form>
-<h3>Sesiones</h3>
-<ul>
-    {% for sesion in sesiones %}
-        <li>{{ sesion.titulo }}: {{ sesion.hora_inicio }} - {{ sesion.hora_fin }} en {{ sesion.ubicacion }} {% if sesion.trabajo %}({{ sesion.trabajo.titulo }}){% endif %}</li>
-    {% endfor %}
-</ul>
-<h3>Trabajos Aceptados</h3>
-<ul>
-    {% for trabajo in trabajos_aceptados %}
-        <li>{{ trabajo.titulo }} por {{ trabajo.autor.username }}</li>
-    {% endfor %}
-</ul>
+<div class="container mt-5">
+    <h2 class="mb-4"><i class="fas fa-calendar-alt"></i> Organizar Cronograma para {{ evento.nombre }}</h2>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-plus-circle"></i> Asignar Sesión</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="{{ form.titulo.id_for_label }}"><i class="fas fa-heading"></i> Título</label>
+                    {{ form.titulo|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.hora_inicio.id_for_label }}"><i class="fas fa-clock"></i> Hora de Inicio</label>
+                    {{ form.hora_inicio|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-3">
+                    <label for="{{ form.hora_fin.id_for_label }}"><i class="fas fa-clock"></i> Hora de Fin</label>
+                    {{ form.hora_fin|add_class:"form-control" }}
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.trabajo.id_for_label }}"><i class="fas fa-briefcase"></i> Trabajo</label>
+                    {{ form.trabajo|add_class:"form-control" }}
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Asignar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list"></i> Sesiones</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for sesion in sesiones %}
+                    <li class="list-group-item">
+                        <strong>{{ sesion.titulo }}</strong>: {{ sesion.hora_inicio }} - {{ sesion.hora_fin }} en {{ sesion.ubicacion }} 
+                        {% if sesion.trabajo %}
+                            <span class="badge bg-success">{{ sesion.trabajo.titulo }}</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-check"></i> Trabajos Aceptados</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for trabajo in trabajos_aceptados %}
+                    <li class="list-group-item">
+                        {{ trabajo.titulo }} por {{ trabajo.autor.username }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

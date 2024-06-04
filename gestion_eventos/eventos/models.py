@@ -31,7 +31,7 @@ class Evento(models.Model):
     url_virtual = models.URLField(blank=True, null=True)  # Campo para el enlace del evento virtual
     capacidad = models.PositiveIntegerField(blank=True, null=True)  # Campo para la capacidad
     organizador = models.CharField(max_length=200, blank=True, null=False)  # Campo para el organizador
-
+    sitio_web = models.URLField(blank=True, null=True)  # Campo para el sitio web
     def __str__(self):
         return self.nombre
 
@@ -108,7 +108,6 @@ class Sesion(models.Model):
     titulo = models.CharField(max_length=200)
     hora_inicio = models.DateTimeField()
     hora_fin = models.DateTimeField()
-    ubicacion = models.CharField(max_length=200)
     trabajo = models.ForeignKey(Trabajo, null=True, blank=True, on_delete=models.SET_NULL)
 
     def clean(self):
@@ -119,6 +118,7 @@ class Sesion(models.Model):
         solapamiento = Sesion.objects.filter(evento=self.evento, hora_inicio__lt=self.hora_fin, hora_fin__gt=self.hora_inicio).exclude(id=self.id)
         if solapamiento.exists():
             raise ValidationError('Esta sesión se solapa con otra ya programada en el evento.')
+
 
 # Añadir señal para actualizar configuración de correo dinámicamente
 from django.db.models.signals import post_save

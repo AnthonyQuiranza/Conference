@@ -196,18 +196,30 @@ def organizar_cronograma(request, evento_id):
     evento = get_object_or_404(Evento, id=evento_id)
     sesiones = Sesion.objects.filter(evento=evento)
     trabajos_aceptados = Trabajo.objects.filter(evento=evento, aceptado=True)
+    
     if request.method == 'POST':
         form = SesionForm(request.POST)
         if form.is_valid():
+            sesion = form.save(commit=False)
+            sesion.evento = evento  # Asignar explícitamente el evento a la sesión
             try:
-                form.save()
+                sesion.full_clean()  # Validar antes de guardar
+                sesion.save()
                 messages.success(request, 'Sesión asignada correctamente.')
                 return redirect('organizar_cronograma', evento_id=evento.id)
             except ValidationError as e:
                 messages.error(request, f'Error al asignar la sesión: {e}')
     else:
         form = SesionForm(initial={'evento': evento})
-    return render(request, 'eventos/organizar_cronograma.html', {'evento': evento, 'sesiones': sesiones, 'trabajos_aceptados': trabajos_aceptados, 'form': form})
+
+    return render(request, 'eventos/organizar_cronograma.html', {
+        'evento': evento,
+        'sesiones': sesiones,
+        'trabajos_aceptados': trabajos_aceptados,
+        'form': form
+    })
+
+
 
 @login_required
 @user_passes_test(lambda u: u.rol == 'organizador')

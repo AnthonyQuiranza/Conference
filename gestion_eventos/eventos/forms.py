@@ -16,7 +16,7 @@ TIPOS_TRABAJO_CHOICES = [
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
-        fields = ['nombre', 'logo', 'fecha_inicio', 'fecha_fin', 'descripcion', 'tipos_trabajo', 'es_virtual', 'ubicacion', 'url_virtual', 'capacidad']
+        fields = ['nombre', 'logo', 'fecha_inicio', 'fecha_fin', 'descripcion', 'tipos_trabajo', 'es_virtual', 'ubicacion', 'url_virtual', 'capacidad','sitio_web','organizador']
         widgets = {
             'tipos_trabajo': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
@@ -124,15 +124,16 @@ class UsuarioPersonalizadoForm(UserCreationForm):
 class SesionForm(forms.ModelForm):
     class Meta:
         model = Sesion
-        fields = ['evento', 'titulo', 'hora_inicio', 'hora_fin', 'ubicacion', 'trabajo']
+        fields = ['titulo', 'hora_inicio', 'hora_fin', 'trabajo']
         widgets = {
-            'evento': forms.Select(attrs={'class': 'form-control'}),
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
             'hora_inicio': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             'hora_fin': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            'ubicacion': forms.TextInput(attrs={'class': 'form-control'}),
             'trabajo': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+
 
 class AsignarRevisorForm(forms.Form):
     revisores = forms.ModelMultipleChoiceField(
